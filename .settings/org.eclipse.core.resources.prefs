@@ -1,0 +1,10 @@
+eclipse.preferences.version=1
+encoding//src/main/java/cn/icodelife/dao/SeckillDao.java=UTF-8
+encoding//src/main/java/cn/icodelife/dao/SuccessKilledDao.java=UTF-8
+encoding//src/main/java/cn/icodelife/entity/Seckill.java=UTF-8
+encoding//src/main/java/cn/icodelife/entity/SuccessKilled.java=UTF-8
+encoding//src/main/sql/schema.sql=UTF-8
+encoding//src/main/sql/seckill.sql=UTF-8
+encoding//src/test/java/cn/icodelife/seckill/BaseTest.java=UTF-8
+encoding//src/test/java/cn/icodelife/seckill/dao/SeckillDaoTest.java=UTF-8
+encoding//src/test/java/cn/icodelife/seckill/dao/SuccessKilledDaoTest.java=UTF-8
