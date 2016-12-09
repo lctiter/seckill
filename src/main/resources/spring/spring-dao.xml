@@ -47,6 +47,10 @@
 		<!-- 给出需要扫描Dao接口包 -->
 		<property name="basePackage" value="cn.icodelife.dao" />
 	</bean>
-
+		<!-- RedisDao -->
+	<bean id="redisDao" class="cn.icodelife.dao.cache.RedisDao">
+		<constructor-arg index="0" value="127.0.0.1" />
+		<constructor-arg index="1" value="6379" />
+	</bean>
 	
 </beans>

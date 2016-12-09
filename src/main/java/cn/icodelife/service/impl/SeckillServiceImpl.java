@@ -1,8 +1,11 @@
 package cn.icodelife.service.impl;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.apache.commons.collections.MapUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +15,7 @@ import org.springframework.util.DigestUtils;
 
 import cn.icodelife.dao.SeckillDao;
 import cn.icodelife.dao.SuccessKilledDao;
+import cn.icodelife.dao.cache.RedisDao;
 import cn.icodelife.dto.Exposer;
 import cn.icodelife.dto.SeckillExecution;
 import cn.icodelife.entity.Seckill;
@@ -32,6 +36,8 @@ public class SeckillServiceImpl implements SeckillService {
 	@Autowired
 	private SuccessKilledDao successKilledDao;
 
+	@Autowired
+	private RedisDao redisDao;
 	// md5盐值字符串，用于混淆MD5
 	private final String slat = "skdfjksjdf7787%^%^%^FSKJFK*(&&%^%&^8DF8^%^^*7hFJDHFJ";
 
@@ -51,7 +57,19 @@ public class SeckillServiceImpl implements SeckillService {
 
 	public Exposer exportSeckillUrl(long seckillId) {
 	
-		Seckill seckill = seckillDao.queryById(seckillId);
+		// 优化点：缓存优化：超时的基础上维护一致性
+		// 1.访问redis
+		Seckill seckill = redisDao.getSeckill(seckillId);
+		if (seckill == null) {
+			// 2.访问数据库
+			seckill = seckillDao.queryById(seckillId);
+			if (seckill == null) {
+				return new Exposer(false, seckillId);
+			} else {
+				// 3.访问redis
+				redisDao.putSeckill(seckill);
+			}
+		}
 		if (seckill == null) {
 			return new Exposer(false, seckillId);
 		}
@@ -111,7 +129,7 @@ public class SeckillServiceImpl implements SeckillService {
 		}
 	}
 
-	/*@Override
+	@Override
 	public SeckillExecution executeSeckillProcedure(long seckillId, long userPhone, String md5) {
 		if (md5 == null || !md5.equals(getMD5(seckillId))) {
 			return new SeckillExecution(seckillId, SeckillStateEnum.DATA_REWRITE);
@@ -137,5 +155,5 @@ public class SeckillServiceImpl implements SeckillService {
 			logger.error(e.getMessage(), e);
 			return new SeckillExecution(seckillId, SeckillStateEnum.INNER_ERROR);
 		}
-	}*/
+	}
 }

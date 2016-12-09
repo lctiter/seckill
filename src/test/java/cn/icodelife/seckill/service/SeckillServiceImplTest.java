@@ -63,9 +63,9 @@ public class SeckillServiceImplTest extends BaseTest {
 		Exposer exposer = seckillService.exportSeckillUrl(id);
 		logger.info("exposer={}",exposer);
 	}
-	/*@Test
+	@Test
 	public void testExecuteSeckillProcedure() throws Exception {
-		long seckillId = 1001;
+		long seckillId = 1000;
 		long phone = 13631231234L;
 		Exposer exposer = seckillService.exportSeckillUrl(seckillId);
 		if (exposer.isExposed()) {
@@ -73,6 +73,6 @@ public class SeckillServiceImplTest extends BaseTest {
 			SeckillExecution execution = seckillService.executeSeckillProcedure(seckillId, phone, md5);
 			logger.info(execution.getStateInfo());
 		}
-	}*/
+	}
 
 }
